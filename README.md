@@ -1,4 +1,3 @@
-## Assignment 
 
 ## Project Goal
 Create an seats booking application
