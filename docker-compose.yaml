@@ -1,0 +1,38 @@
+version: '3.6'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    volumes:
+      - ./app:/booking/app
+      
+
+  mysql:
+    image: mysql:8.0.27
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_DATABASE=book_seats
+      - MYSQL_ROOT_PASSWORD=password
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - mysqldb:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.1.3-apache
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+    restart: always
+    depends_on:
+      - mysql
+
+volumes:
+  mysqldb:

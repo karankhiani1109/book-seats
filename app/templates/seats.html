@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/app.css')}}" >
+    <title>BOoking seats</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+</head>
+<body>
+	
+	<form class="form-inline" action="/book" method="POST">
+        <label>Enter number of seats to book</label>
+	  	<input type="text" id="total_seats" placeholder="Enter number of seats" name="total_seats">
+	  	<button type="submit">Submit</button>
+	</form>
+ 
+    <div class="bus seat4-3 border-0 p-0">
+        {% for seats_row in seats %}
+            {% set outer_index = loop.index0 %}
+            <div class="seat-row-{{ outer_index }}">
+                <ol class="seats">
+                    {% for seat in seats_row %}
+                        <li class="seat">
+                            <input role="input-passenger-seat" name="{{ 'passengers[' + seat[0] + '][seat]' }}" id="{{ 'seat-radio-' + outer_index|string + '-' + seat[0] }}" value="{{ seat[0] }}" required="" type="radio" {% if seat[1] == 'True' %} disabled {% endif %}>
+                            <label for="{{ 'seat-radio-' + outer_index|string + '-' + seat[0] }}">{{ seat[0] }}</label>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-left mt-2">
+        <button class="btn btn-primary btn-xs mb-2">Available</button>
+        <button class="btn btn-success btn-xs mb-2">Choosen</button>
+        <button class="btn btn-danger btn-xs mb-2">Booked</button>
+        <a href="/reset" class="btn btn-warning btn-xs mb-2">Reset</a>
+    </div>
+</body>
+</html>
